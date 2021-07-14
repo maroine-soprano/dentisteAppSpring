@@ -1,6 +1,7 @@
 package org.mk.dentisteapp.config;
 
 import org.mk.dentisteapp.entities.Categorie;
+import org.mk.dentisteapp.entities.Commentaire;
 import org.mk.dentisteapp.entities.Jour;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;

@@ -16,7 +16,7 @@ import java.util.Set;
 @Inheritance( strategy = InheritanceType.SINGLE_TABLE )
 @DiscriminatorColumn( name = "type" )
 @Setter @Getter @ToString @NoArgsConstructor
-public abstract class Commentaire extends Auditable<String> {
+public class Commentaire extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +25,8 @@ public abstract class Commentaire extends Auditable<String> {
     private String author;
     @Transient
     private Long authorId;
+    @Transient
+    private String type;
 
     @JsonIgnore
     @ManyToOne()

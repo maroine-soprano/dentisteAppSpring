@@ -27,6 +27,13 @@ public class CommentaireController {
         return cmt;
     }
 
+    @MessageMapping("/resume.editOrUpdate")
+    @SendTo("/start/listenerUpdate")
+    public WebSocketCmnt editOrUpdate(@Payload WebSocketCmnt cmt) {
+        System.out.println(cmt.getId()+"///////////////////////////////editOrUpdate");
+        return cmt;
+    }
+
     @PostMapping("commentaire/add")
     @ResponseBody
     public Commentaire add(@RequestParam(value = "file", required = false) MultipartFile file,
@@ -41,4 +48,15 @@ public class CommentaireController {
         return commentaireService.getFile(filename);
     }
 
+    @RequestMapping(value = "/commentaire/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Commentaire update(@PathVariable("id") Long id,@RequestBody Commentaire commentaire){
+        return commentaireService.update(id,commentaire);
+    }
+
+    @DeleteMapping("/commentaire/{id}")
+    @ResponseBody
+    public void delete(@PathVariable("id") Long id){
+        commentaireService.delete(id);
+    }
 }

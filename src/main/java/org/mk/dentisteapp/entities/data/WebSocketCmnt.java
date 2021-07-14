@@ -14,8 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 public class WebSocketCmnt {
-    private Long id;
-    private String text;
+    private Long id;//=index whene request is edit or delete
+    private String text;//value
     private String author;
     private Long authorId;
     private Dentiste dentiste;
@@ -24,5 +24,6 @@ public class WebSocketCmnt {
     private Set<SousCmnt> sousCmnts=new HashSet<>();
     private int principalCmntId;
     private Date createdDate;
-    private int principalCmntIndex;
+    private int principalCmntIndex;//principalIndex
+    private String requestType;
 }

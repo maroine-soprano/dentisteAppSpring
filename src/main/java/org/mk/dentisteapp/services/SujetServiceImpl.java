@@ -109,12 +109,14 @@ public class SujetServiceImpl implements SujetService{
     public void changeStatut(Long id) {
         Sujet sujet=sujetRepository.findFirstById(id);
         sujet.setActive(!(sujet.isActive()));
+        sujetRepository.save(sujet);
     }
 
     @Override
     public void changeArchive(Long id) {
         Sujet sujet=sujetRepository.findFirstById(id);
         sujet.setArchive(!(sujet.isArchive()));
+        sujetRepository.save(sujet);
     }
 
     @Override

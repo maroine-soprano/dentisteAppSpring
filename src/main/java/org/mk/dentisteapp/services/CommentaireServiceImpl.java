@@ -7,11 +7,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.mk.dentisteapp.dao.CommentaireRepository;
 import org.mk.dentisteapp.dao.FichierCmntRepository;
 import org.mk.dentisteapp.dao.PrincipalCmntRepository;
+import org.mk.dentisteapp.dao.SousCmntRepository;
 import org.mk.dentisteapp.entities.*;
 import org.mk.dentisteapp.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
@@ -34,6 +36,8 @@ public class CommentaireServiceImpl implements CommentaireService{
     FichierCmntRepository fichierCmntRepository;
     @Autowired
     PrincipalCmntRepository principalCmntRepository;
+    @Autowired
+    SousCmntRepository sousCmntRepository;
 
     private FichierCmnt addFile(MultipartFile file,Long id) {
         Map<String,String>data=uploadFile(file);
@@ -77,6 +81,20 @@ public class CommentaireServiceImpl implements CommentaireService{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Commentaire update(Long id,Commentaire commentaire) {
+        Commentaire cmt=commentaireRepository.findFirstById(id);
+        cmt.setText(commentaire.getText());
+        commentaireRepository.save(cmt);
+        return commentaire;
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        commentaireRepository.deleteById(id);
     }
 
 
