@@ -22,6 +22,6 @@ public class Demande extends Auditable<String> {
     private Dentiste dentiste;
 
     @ManyToOne()
-    @JoinColumn(name="publicSalon_id")
-    private Public publicSalon;
+    @JoinColumn(name="privateSalon_id")
+    private Private privateSalon;
 }

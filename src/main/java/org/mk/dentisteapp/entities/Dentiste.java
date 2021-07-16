@@ -53,14 +53,6 @@ public class Dentiste extends Auditable<String> {
     private Set<Salon> salons=new HashSet<>();
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    },
-            mappedBy = "dentistes")
-    private Set<Private> salonsPrivate=new HashSet<>();
-
-    @JsonIgnore
     @OneToMany(mappedBy = "dentiste",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Demande> demandes=new HashSet<>();
 
