@@ -1,5 +1,6 @@
 package org.mk.dentisteapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class FichierMessage extends Auditable<String> {
     private String chemin;
     private String type;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name="message_id")
     private Message message;

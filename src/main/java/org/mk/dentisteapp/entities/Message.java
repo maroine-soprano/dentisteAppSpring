@@ -24,6 +24,8 @@ public class Message extends Auditable<String> {
     private String author;
     @Transient
     private Long authorId;
+    @Transient
+    private Long salonId;
 
     @JsonIgnore
     @ManyToOne()

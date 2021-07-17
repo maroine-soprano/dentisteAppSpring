@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface SalonService {
     List<Private>getAll(Optional<String> query);
+    boolean canEnterSalon(Long salon_id,Long dentiste_id);
     ResponseEntity<String> sendDemande(Long salon_id,Long dentiste_id);
     ResponseEntity<String> acceptOrRefuseDemande(Long salon_id,Long dentiste_id);
     ResponseEntity<String> refuseDemande(Long salon_id,Long dentiste_id);

@@ -1,14 +1,13 @@
 package org.mk.dentisteapp.services;
 
 import org.mk.dentisteapp.dao.*;
-import org.mk.dentisteapp.entities.Demande;
-import org.mk.dentisteapp.entities.Private;
-import org.mk.dentisteapp.entities.Public;
-import org.mk.dentisteapp.entities.Salon;
+import org.mk.dentisteapp.entities.*;
+import org.mk.dentisteapp.util.UserPrincipal;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +29,13 @@ public class SalonServiceImpl implements SalonService{
     @Override
     public List<Private> getAll(Optional<String> query) {
         return privateRepository.findAllByActiveTrueAndNomContainingOrderByCreatedDateDesc(query.orElse(" "));
+    }
+
+    @Override
+    public boolean canEnterSalon(Long salon_id, Long dentiste_id) {
+        Salon salon=salonRepository.findFirstById(salon_id);
+        if (salon.getDentiste().getId().equals(dentiste_id))return true;
+        return demandeRepository.findFirstByAcceptedTrueAndDentisteIdAndPrivateSalonId(dentiste_id, salon_id) != null;
     }
 
     @Override
@@ -91,10 +97,13 @@ public class SalonServiceImpl implements SalonService{
 
     @Override
     public Salon addSalon(Salon salon) {
+        UserPrincipal myUserDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user= myUserDetails.getUser();
         Salon newSalon;
         if (salon.getType().equals("public"))newSalon=new Public();
         else newSalon=new Private();
         BeanUtils.copyProperties(salon,newSalon);
+        newSalon.setDentiste(user.getDentiste());
         return salonRepository.save(newSalon);
     }
 
