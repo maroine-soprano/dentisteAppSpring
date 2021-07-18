@@ -8,6 +8,10 @@ import org.mk.dentisteapp.dao.SalonRepository;
 import org.mk.dentisteapp.entities.*;
 import org.mk.dentisteapp.util.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,8 +81,26 @@ public class MessageServiceImpl implements MessageService{
         return null;
     }
 
+    @Override
+    public ResponseEntity<byte[]> getDocument(String filename) {
+        byte[] contents=null;
+        try {
+            contents= Files.readAllBytes(Paths.get(context.getRealPath("/filesMessage/")+filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
+    }
+
     private Map<String,String> uploadFile(MultipartFile file){
         boolean isExit = new File(context.getRealPath("/filesMessage/")).exists();
+        String mimeType="";
         if (!isExit) {
             new File(context.getRealPath("/filesMessage/")).mkdir();
         }
@@ -87,13 +109,14 @@ public class MessageServiceImpl implements MessageService{
         File serverFile = new File(context.getRealPath("/filesMessage/" + File.separator + newFileName));
         try {
             FileUtils.writeByteArrayToFile(serverFile, file.getBytes());
+            mimeType = Files.probeContentType(serverFile.toPath());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         Map<String,String>data=new HashMap<>();
         data.put("filename",newFileName);
-        data.put("type",FilenameUtils.getExtension(filename));
+        data.put("type",mimeType.split("/")[0]);
         return data;
     }
 }

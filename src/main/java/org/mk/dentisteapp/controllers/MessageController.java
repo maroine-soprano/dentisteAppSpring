@@ -4,6 +4,7 @@ import org.mk.dentisteapp.entities.Message;
 import org.mk.dentisteapp.entities.data.WebSocketCmnt;
 import org.mk.dentisteapp.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
 
 @Controller
 public class MessageController {
@@ -30,4 +33,11 @@ public class MessageController {
     public byte[] getFile(@PathVariable("filename") String filename){
         return messageService.getFile(filename);
     }
+
+    @GetMapping("messages/document/{filename}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getDocument(@PathVariable("filename") String filename) {
+        return messageService.getDocument(filename);
+    }
+
 }
