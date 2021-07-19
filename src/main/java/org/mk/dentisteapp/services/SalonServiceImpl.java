@@ -28,7 +28,7 @@ public class SalonServiceImpl implements SalonService{
 
     @Override
     public List<Private> getAll(Optional<String> query) {
-        return privateRepository.findAllByActiveTrueAndNomContainingOrderByCreatedDateDesc(query.orElse(" "));
+        return privateRepository.findAllByActiveTrueAndNomContainingOrderByCreatedDateDesc(query.orElse(""));
     }
 
     @Override

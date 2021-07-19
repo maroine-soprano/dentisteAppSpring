@@ -28,6 +28,8 @@ public class Dentiste extends Auditable<String> {
     private String position;
     private String photo;
     private String carte;
+    @Transient
+    private String email;
 
     @JsonIgnore
     @OneToOne(mappedBy = "dentiste",cascade = CascadeType.ALL)
@@ -68,5 +70,10 @@ public class Dentiste extends Auditable<String> {
         this.position = position;
         this.photo = photo;
         this.carte = carte;
+    }
+
+    @PostLoad
+    public void setEmail(){
+        this.email=this.user.getEmail();
     }
 }

@@ -6,14 +6,17 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import java.security.Principal;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config){
-        config.enableSimpleBroker("/start");
-        config.setApplicationDestinationPrefixes("/current");
+        config.enableSimpleBroker("/start","/user");
+        config.setApplicationDestinationPrefixes("/current","/app");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override

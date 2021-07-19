@@ -17,6 +17,11 @@ public class Notification extends Auditable<String> {
     private Long id;
     private String titre;
     private String contenu;
+    private String fromUser;
+    private Long fromId;
+    private String type;
+    @Transient
+    private String user_id;
 
     @ManyToOne()
     @JoinColumn(name="user_id")
