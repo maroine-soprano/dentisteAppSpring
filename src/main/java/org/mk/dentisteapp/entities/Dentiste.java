@@ -19,6 +19,7 @@ public class Dentiste extends Auditable<String> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
+    private String titre;
     private String prenom;
     private String adresse;
     private int teleAccueil;

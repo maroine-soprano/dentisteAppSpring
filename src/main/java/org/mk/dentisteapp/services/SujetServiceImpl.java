@@ -149,6 +149,7 @@ public class SujetServiceImpl implements SujetService{
 
     private Map<String,String> uploadFile(MultipartFile file){
         boolean isExit = new File(context.getRealPath("/filesSujet/")).exists();
+        String mimeType="";
         if (!isExit) {
             new File(context.getRealPath("/filesSujet/")).mkdir();
         }
@@ -157,13 +158,14 @@ public class SujetServiceImpl implements SujetService{
         File serverFile = new File(context.getRealPath("/filesSujet/" + File.separator + newFileName));
         try {
             FileUtils.writeByteArrayToFile(serverFile, file.getBytes());
+            mimeType = Files.probeContentType(serverFile.toPath());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         Map<String,String>data=new HashMap<>();
         data.put("filename",newFileName);
-        data.put("type",FilenameUtils.getExtension(filename));
+        data.put("type",mimeType.split("/")[0]);
         return data;
     }
 }
